@@ -17,6 +17,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "role", nullable = false)
     private String role;
 
@@ -32,6 +35,15 @@ public class User {
     private List<Pokemon> pokemons;
 
     public User() {
+    }
+
+    public User(String id, String username, String password, String email, String role, boolean isActive) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.isActive = isActive;
     }
 
     public String getId() {
@@ -58,6 +70,14 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getRole() {
         return role;
     }
@@ -80,6 +100,7 @@ public class User {
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", isActive=" + isActive +
                 ", pokemons=" + pokemons +
