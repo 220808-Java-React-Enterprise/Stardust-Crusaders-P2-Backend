@@ -22,7 +22,7 @@ public class AuthController {
 
     @ExceptionHandler(value = InvalidRequestException.class)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping(value = "/login", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
 //        resp.setHeader("Authorization", token);
         return userService.login(request);

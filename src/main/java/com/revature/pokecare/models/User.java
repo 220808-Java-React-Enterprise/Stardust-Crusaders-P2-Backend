@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    private String id;
+    private String user_id;
 
     @Column(name = "username",nullable = false)
     private String username;
@@ -37,8 +37,8 @@ public class User {
     public User() {
     }
 
-    public User(String id, String username, String password, String email, String role, boolean isActive) {
-        this.id = id;
+    public User(String user_id, String username, String password, String email, String role, boolean isActive) {
+        this.user_id = user_id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -46,12 +46,12 @@ public class User {
         this.isActive = isActive;
     }
 
-    public String getId() {
-        return id;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getUsername() {
@@ -97,7 +97,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
+                "user_id='" + user_id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
