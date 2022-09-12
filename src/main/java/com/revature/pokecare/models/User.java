@@ -26,13 +26,13 @@ public class User {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @OneToMany (
-            mappedBy = "user",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
-    @JsonManagedReference
-    private List<Pokemon> pokemons;
+//    @OneToMany (
+//            mappedBy = "user",
+//            fetch = FetchType.EAGER,
+//            cascade = CascadeType.ALL
+//    )
+//    @JsonManagedReference
+//    private List<Pokemon> pokemons;
 
     public User() {
     }
@@ -103,7 +103,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", isActive=" + isActive +
-                ", pokemons=" + pokemons +
                 '}';
     }
 }
