@@ -2,6 +2,7 @@ package com.revature.pokecare.controllers;
 
 import com.revature.pokecare.dtos.requests.LoginRequest;
 import com.revature.pokecare.dtos.responses.Principal;
+import com.revature.pokecare.services.TokenService;
 import com.revature.pokecare.services.UserService;
 import com.revature.pokecare.utils.custom_exceptions.InvalidRequestException;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,21 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
 
     private final UserService userService;
+    private final TokenService tokenService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @ExceptionHandler(value = InvalidRequestException.class)
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
-//        resp.setHeader("Authorization", token);
-        return userService.login(request);
+        Principal principal = userService.login(request);
+        String token = tokenService.generateToken(principal);
+        resp.setHeader("Authorization", token);
+        return principal;
     }
 
 }

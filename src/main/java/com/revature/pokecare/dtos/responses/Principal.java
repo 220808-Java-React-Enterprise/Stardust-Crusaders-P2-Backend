@@ -11,16 +11,13 @@ public class Principal {
 
     private String role;
 
-    private boolean isActive;
-
     public Principal() {
     }
 
-    public Principal(String id, String username, String role, boolean isActive) {
+    public Principal(String id, String username, String role) {
         this.id = id;
         this.username = username;
         this.role = role;
-        this.isActive = isActive;
     }
 
     public String getId() {
@@ -47,11 +44,12 @@ public class Principal {
         this.role = role;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+    @Override
+    public String toString() {
+        return "Principal{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

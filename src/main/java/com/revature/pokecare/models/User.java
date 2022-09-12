@@ -17,6 +17,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "given_name", nullable = false)
+    private String given_name;
+
+    @Column(name = "surname", nullable = false)
+    private String surname;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -37,10 +43,12 @@ public class User {
     public User() {
     }
 
-    public User(String user_id, String username, String password, String email, String role, boolean isActive) {
+    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
+        this.given_name = given_name;
+        this.surname = surname;
         this.email = email;
         this.role = role;
         this.isActive = isActive;
@@ -68,6 +76,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getGiven_name() {
+        return given_name;
+    }
+
+    public void setGiven_name(String given_name) {
+        this.given_name = given_name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -100,6 +124,8 @@ public class User {
                 "user_id='" + user_id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", given_name='" + given_name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", isActive=" + isActive +
