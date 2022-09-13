@@ -25,8 +25,8 @@ public class UserController {
     @ExceptionHandler(value = {ResourceConflictException.class, InvalidRequestException.class})
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/signup", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String signup(@RequestBody NewUserRequest request) {
-        return userService.register(request).getUser_id();
+    public @ResponseBody String signup(@RequestBody NewUserRequest request, @RequestParam(name = "role", required = false, defaultValue = "user") String role) {
+        return userService.register(request, role).getUser_id();
     }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
