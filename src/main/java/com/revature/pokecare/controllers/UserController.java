@@ -29,9 +29,4 @@ public class UserController {
         return userService.register(request, role).getUser_id();
     }
 
-    @PostMapping(value = "/login", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Principal login(@RequestBody LoginRequest request) {
-        return userService.login(request);
-    }
-
 }

@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @ExceptionHandler(value = InvalidRequestException.class)
-    @ResponseStatus(value = HttpStatus.CREATED)
+    @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
         Principal principal = userService.login(request);

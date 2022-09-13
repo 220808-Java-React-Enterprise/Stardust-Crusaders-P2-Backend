@@ -63,7 +63,9 @@ public class UserService {
         return new Principal(user.getUser_id(), user.getUsername(), user.getRole());
     }
 
-
+    public void setActive(String id, boolean isActive) {
+        userRepo.setActive(id, isActive);
+    }
 
     public Optional<User> getById(String id) {
         return userRepo.findById(id);
