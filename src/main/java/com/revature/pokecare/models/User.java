@@ -32,6 +32,9 @@ public class User {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
+    @Column(name = "salt", nullable = false)
+    private byte[] salt;
+
 //    @OneToMany (
 //            mappedBy = "user",
 //            fetch = FetchType.EAGER,
@@ -43,7 +46,7 @@ public class User {
     public User() {
     }
 
-    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive) {
+    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
@@ -52,6 +55,7 @@ public class User {
         this.email = email;
         this.role = role;
         this.isActive = isActive;
+        this.salt = salt;
     }
 
     public String getUser_id() {
@@ -116,6 +120,14 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     @Override

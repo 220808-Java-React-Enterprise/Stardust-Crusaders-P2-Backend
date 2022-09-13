@@ -5,6 +5,7 @@ import com.revature.pokecare.dtos.requests.NewUserRequest;
 import com.revature.pokecare.dtos.responses.Principal;
 import com.revature.pokecare.models.User;
 import com.revature.pokecare.repositories.UserRepository;
+import com.revature.pokecare.utils.HashConfig;
 import com.revature.pokecare.utils.custom_exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,15 @@ public class UserService {
     @Autowired
     private final UserRepository userRepo;
 
-    public UserService(UserRepository userRepo) {
+    @Autowired
+    private final HashConfig hash;
+
+    public UserService(UserRepository userRepo, HashConfig hash) {
         this.userRepo = userRepo;
+        this.hash = hash;
     }
 
-    public User register(NewUserRequest request) {
+    public User register(NewUserRequest request, String role) {
         User user = null;
         if (isValidUsername(request.getUsername())) {
             if (!isDuplicateUsername(request.getUsername())) {
@@ -30,14 +35,17 @@ public class UserService {
                     if (isSamePassword(request.getPassword1(), request.getPassword2())) {
                         if (isValidEmail(request.getEmail())) {
                             if (!isDuplicateEmail(request.getEmail())) {
+                                byte[] salt = hash.generateSalt();
+                                String userPass = hash.hashPassword(request.getPassword1(), salt);
                                 user = new User(UUID.randomUUID().toString(),
                                         request.getUsername(),
-                                        request.getPassword1(),
+                                        userPass,
                                         request.getGiven_name(),
                                         request.getSurname(),
                                         request.getEmail(),
-                                        "user",
-                                        false);
+                                        role,
+                                        false,
+                                        salt);
                                 userRepo.save(user);
                             }
                         }
@@ -49,10 +57,13 @@ public class UserService {
     }
 
     public Principal login(LoginRequest request) {
-        User user = userRepo.login(request.getUsername(), request.getPassword());
+        String loginPass = hash.hashPassword(request.getPassword(), userRepo.getSalt(request.getUsername()));
+        User user = userRepo.login(request.getUsername(), loginPass);
         if (user == null) throw new AuthenticationException("\nIncorrect username or password");
         return new Principal(user.getUser_id(), user.getUsername(), user.getRole());
     }
+
+
 
     public Optional<User> getById(String id) {
         return userRepo.findById(id);
