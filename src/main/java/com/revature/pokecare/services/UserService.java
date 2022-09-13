@@ -33,6 +33,8 @@ public class UserService {
                                 user = new User(UUID.randomUUID().toString(),
                                         request.getUsername(),
                                         request.getPassword1(),
+                                        request.getGiven_name(),
+                                        request.getSurname(),
                                         request.getEmail(),
                                         "user",
                                         false);
@@ -49,7 +51,7 @@ public class UserService {
     public Principal login(LoginRequest request) {
         User user = userRepo.login(request.getUsername(), request.getPassword());
         if (user == null) throw new AuthenticationException("\nIncorrect username or password");
-        return new Principal(user.getUser_id(), user.getUsername(), user.getRole(), user.isActive());
+        return new Principal(user.getUser_id(), user.getUsername(), user.getRole());
     }
 
     public Optional<User> getById(String id) {
