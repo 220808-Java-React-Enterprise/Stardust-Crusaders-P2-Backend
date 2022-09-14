@@ -18,8 +18,6 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private final UserRepository userRepo;
-
-    @Autowired
     private final HashConfig hash;
 
     public UserService(UserRepository userRepo, HashConfig hash) {
@@ -30,11 +28,11 @@ public class UserService {
     public User register(NewUserRequest request, String role) {
         User user = null;
         if (isValidUsername(request.getUsername())) {
-            if (!isDuplicateUsername(request.getUsername())) {
+            if (isDuplicateUsername(request.getUsername())) {
                 if (isValidPassword(request.getPassword1())) {
                     if (isSamePassword(request.getPassword1(), request.getPassword2())) {
                         if (isValidEmail(request.getEmail())) {
-                            if (!isDuplicateEmail(request.getEmail())) {
+                            if (isDuplicateEmail(request.getEmail())) {
                                 byte[] salt = hash.generateSalt();
                                 String userPass = hash.hashPassword(request.getPassword1(), salt);
                                 user = new User(UUID.randomUUID().toString(),
@@ -75,6 +73,44 @@ public class UserService {
         return (List<User>) userRepo.findAll();
     }
 
+    public void updateUsername(String id, String username) {
+        if (isValidUsername(username)) {
+            if (isDuplicateUsername(username)) {
+                userRepo.changeUsername(id, username);
+            }
+        }
+    }
+
+    public void updatePassword(String id, String password1, String password2) {
+        if (isValidPassword(password1)) {
+            if (isSamePassword(password1, password2)) {
+                byte[] salt = hash.generateSalt();
+                String newPass = hash.hashPassword(password1, salt);
+                userRepo.changePassword(id, newPass, salt);
+            }
+        }
+    }
+
+    public void updateEmail(String id, String email) {
+        if (isValidEmail(email)) {
+            if (isDuplicateEmail(email)) {
+                userRepo.changeEmail(id, email);
+            }
+        }
+    }
+
+    public void updateGivenName(String id, String name) {
+        if (isValidName(name)) {
+            userRepo.changeGivenName(id, name);
+        }
+    }
+
+    public void updateSurname(String id, String name) {
+        if (isValidName(name)) {
+            userRepo.changeSurname(id, name);
+        }
+    }
+
     public boolean isValidUsername(String username) {
         if (!username.matches("^[a-zA-Z0-9_-]{3,15}$"))
             throw new InvalidRequestException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
@@ -101,11 +137,29 @@ public class UserService {
 
     public boolean isDuplicateUsername(String username) {
         if (userRepo.findUsername(username) != null) throw new ResourceConflictException("\nUsername not available!");
-        return false;
+        return true;
     }
 
     public boolean isDuplicateEmail(String email) {
         if (userRepo.findEmail(email) != null) throw new ResourceConflictException("\nEmail not available!");
-        return false;
+        return true;
     }
+
+    public boolean isValidName(String name) {
+        if (!name.matches("^(\\s)*[A-Za-z]{1,20}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$"))
+            throw new InvalidRequestException("\nPlease enter your name (max 20 characters)");
+        return true;
+    }
+
+    public boolean matchesExistingPassword(String id, String password) {
+        String userPass = userRepo.getPassword(id);
+        byte[] userSalt = userRepo.getSaltById(id);
+
+        String saltyPass = hash.hashPassword(password, userSalt);
+        if(!saltyPass.equals(userPass)) {
+            throw new InvalidRequestException ("Password not recognized");
+        }
+        return true;
+    }
+
 }

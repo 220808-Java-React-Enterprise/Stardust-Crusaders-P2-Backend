@@ -5,8 +5,11 @@ import com.revature.pokecare.dtos.responses.Principal;
 import com.revature.pokecare.services.TokenService;
 import com.revature.pokecare.services.UserService;
 import com.revature.pokecare.utils.custom_exceptions.InvalidRequestException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 public class AuthController {
 
+    @Autowired
     private final UserService userService;
     private final TokenService tokenService;
 
@@ -23,14 +27,24 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    @ExceptionHandler(value = InvalidRequestException.class)
+    @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
-        Principal principal = userService.login(request);
-        String token = tokenService.generateToken(principal);
-        resp.setHeader("Authorization", token);
-        return principal;
+        try {
+            Principal principal = userService.login(request);
+            String token = tokenService.generateToken(principal);
+            resp.setHeader("Authorization", token);
+            return principal;
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            throw new InvalidRequestException();
+        }
+    }
+
+    @ExceptionHandler(value = InvalidRequestException.class)
+    public ResponseEntity<Object> exception(InvalidRequestException exception) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

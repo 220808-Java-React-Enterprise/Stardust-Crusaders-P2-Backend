@@ -19,8 +19,6 @@ public class AdminController {
 
     @Autowired
     private final UserService userService;
-
-    @Autowired
     private final TokenService tokenService;
 
     public AdminController(UserService userService, TokenService tokenService) {
@@ -28,16 +26,31 @@ public class AdminController {
         this.tokenService = tokenService;
     }
 
-    @ExceptionHandler(value = {ResourceConflictException.class, InvalidRequestException.class, HttpClientErrorException.Forbidden.class})
-//    @ResponseStatus(value = HttpStatus.OK)
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = "/activate", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String activateUser(@RequestBody UserIdRequest request, @RequestParam(name = "value") String value, @RequestHeader(name = "Authorization") String token) {
         Principal principal = tokenService.extractRequesterDetails(token);
         if (!principal.getRole().equals("admin")) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ERROR: Forbidden").toString();
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         } else {
-            userService.setActive(request.getUser_id(), Boolean.parseBoolean(value));
-            return "User active = " + value;
+            try {
+                userService.setActive(request.getUser_id(), Boolean.parseBoolean(value));
+                return "User active = " + value;
+            } catch (InvalidRequestException e) {
+                e.getStackTrace();
+                throw new InvalidRequestException();
+            }
         }
+    }
+
+    @ExceptionHandler(value = HttpClientErrorException.Forbidden.class)
+    public ResponseEntity<Object> exception(HttpClientErrorException exception) {
+        return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = InvalidRequestException.class)
+    public ResponseEntity<Object> exception(InvalidRequestException e) {
+        return new ResponseEntity<>("Value not recognized", HttpStatus.BAD_REQUEST);
     }
 }

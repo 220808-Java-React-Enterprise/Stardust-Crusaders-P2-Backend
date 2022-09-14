@@ -17,15 +17,46 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "SELECT username FROM users WHERE username = ?1", nativeQuery = true)
     String findUsername(String username);
 
+    @Query(value = "SELECT password FROM users WHERE user_id = ?1", nativeQuery = true)
+    String getPassword(String id);
+
     @Query(value = "SELECT email FROM users WHERE email = ?1", nativeQuery = true)
     String findEmail(String email);
 
     @Query(value = "SELECT salt FROM users WHERE username = ?1", nativeQuery = true)
     byte[] getSalt(String username);
 
+    @Query(value = "SELECT salt FROM users WHERE user_id = ?1", nativeQuery = true)
+    byte[] getSaltById(String id);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE users SET is_active = ?2 WHERE user_id = ?1", nativeQuery = true)
     void setActive(String id, boolean isActive);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET username = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void changeUsername(String id, String username);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET (password, salt) = (?2, ?3) WHERE user_id = ?1", nativeQuery = true)
+    void changePassword(String id, String password, byte[] salt);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET email = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void changeEmail(String id, String email);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET given_name = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void changeGivenName(String id, String givenName);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET surname = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void changeSurname(String id, String surname);
 
 }
