@@ -38,6 +38,7 @@ public class AuthController {
             return principal;
         } catch (InvalidRequestException e) {
             e.getStackTrace();
+            System.out.println(e.getMessage());
             throw new InvalidRequestException();
         }
     }

@@ -71,10 +71,10 @@ public class UserController {
                     throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY);
             }
         } catch (InvalidRequestException e) {
-            e.getStackTrace();
+            System.out.println(e.getMessage());
             throw new InvalidRequestException();
         } catch (ResourceConflictException e) {
-            e.getStackTrace();
+            System.out.println(e.getMessage());
             throw new ResourceConflictException();
         }
     }
@@ -92,6 +92,7 @@ public class UserController {
             return "Password successfully updated";
         } catch (InvalidRequestException e) {
             e.getStackTrace();
+            System.out.println(e.getMessage());
             throw new InvalidRequestException();
         }
     }

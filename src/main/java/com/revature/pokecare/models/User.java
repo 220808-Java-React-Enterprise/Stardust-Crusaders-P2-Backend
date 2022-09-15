@@ -35,13 +35,13 @@ public class User {
     @Column(name = "salt", nullable = false)
     private byte[] salt;
 
-//    @OneToMany (
-//            mappedBy = "user",
-//            fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL
-//    )
-//    @JsonManagedReference
-//    private List<Pokemon> pokemons;
+    @OneToMany (
+            mappedBy = "user",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Pokemon> pokemon;
 
     public User() {
     }

@@ -39,6 +39,7 @@ public class AdminController {
                 return "User active = " + value;
             } catch (InvalidRequestException e) {
                 e.getStackTrace();
+                System.out.println(e.getMessage());
                 throw new InvalidRequestException();
             }
         }
