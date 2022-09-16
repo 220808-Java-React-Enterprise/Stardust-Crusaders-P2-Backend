@@ -28,6 +28,7 @@ public class AdminController {
         this.tokenService = tokenService;
     }
 
+    @CrossOrigin
     @ExceptionHandler(value = {ResourceConflictException.class, InvalidRequestException.class, HttpClientErrorException.Forbidden.class})
 //    @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = "/activate", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
