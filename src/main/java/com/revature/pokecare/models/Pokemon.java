@@ -1,5 +1,8 @@
 package com.revature.pokecare.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -50,13 +53,23 @@ public class Pokemon {
     @Column(name = "daycare_id", nullable = false)
     private String daycare_id;
 
-    @Column(name = "user_id", nullable = false)
-    private String user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    @OneToMany (
+            mappedBy = "pokemon",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private PokemonMove moveset;
 
     public Pokemon() {
     }
 
-    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, int hpIV, int hpEV, int attack, int special_attack, int defense, int special_defense, int speed, String daycare_id, String user_id) {
+    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, int hpIV, int hpEV, int attack, int special_attack, int defense, int special_defense, int speed, String daycare_id, User user) {
         this.pokemon_id = pokemon_id;
         this.name = name;
         this.pokedex_id = pokedex_id;
@@ -72,7 +85,7 @@ public class Pokemon {
         this.special_defense = special_defense;
         this.speed = speed;
         this.daycare_id = daycare_id;
-        this.user_id = user_id;
+        this.user = user;
     }
 
     public String getPokemon_id() {
@@ -195,12 +208,20 @@ public class Pokemon {
         this.daycare_id = daycare_id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUser_id(User user) {
+        this.user = user;
+    }
+
+    public PokemonMove getMoveset() {
+        return moveset;
+    }
+
+    public void setMoveset(PokemonMove moveset) {
+        this.moveset = moveset;
     }
 
     @Override
@@ -221,7 +242,8 @@ public class Pokemon {
                 ", special_defense=" + special_defense +
                 ", speed=" + speed +
                 ", daycare_id='" + daycare_id + '\'' +
-                ", user_id='" + user_id + '\'' +
+                ", user_id='" + user + '\'' +
+                ", moveset='" + moveset + '\'' +
                 '}';
     }
 }

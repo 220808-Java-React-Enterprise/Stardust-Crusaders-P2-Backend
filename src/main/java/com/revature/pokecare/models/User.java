@@ -46,6 +46,10 @@ public class User {
     public User() {
     }
 
+    public User(String user_id) {
+        this.user_id = user_id;
+    }
+
     public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt) {
         this.user_id = user_id;
         this.username = username;
@@ -128,6 +132,14 @@ public class User {
 
     public void setSalt(byte[] salt) {
         this.salt = salt;
+    }
+
+    public List<Pokemon> getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(List<Pokemon> pokemon) {
+        this.pokemon = pokemon;
     }
 
     @Override
