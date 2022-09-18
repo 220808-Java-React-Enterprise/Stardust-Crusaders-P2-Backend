@@ -22,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @ExceptionHandler(value = {ResourceConflictException.class, InvalidRequestException.class})
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/signup", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -23,6 +23,7 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
+    @CrossOrigin
     @ExceptionHandler(value = InvalidRequestException.class)
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
