@@ -29,6 +29,9 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "SELECT salt FROM users WHERE user_id = ?1", nativeQuery = true)
     byte[] getSaltById(String id);
 
+    @Query(value = "SELECT bio FROM users WHERE user_id = ?1", nativeQuery = true)
+    String getBioById(String id);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE users SET is_active = ?2 WHERE user_id = ?1", nativeQuery = true)
@@ -59,4 +62,8 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "UPDATE users SET surname = ?2 WHERE user_id = ?1", nativeQuery = true)
     void changeSurname(String id, String surname);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET bio = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void updateBio(String id, String bio);
 }

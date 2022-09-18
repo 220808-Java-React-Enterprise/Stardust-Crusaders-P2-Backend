@@ -43,7 +43,8 @@ public class UserService {
                                         request.getEmail(),
                                         role,
                                         false,
-                                        salt);
+                                        salt,
+                                        "");
                                 userRepo.save(user);
                             }
                         }
@@ -109,6 +110,14 @@ public class UserService {
         if (isValidName(name)) {
             userRepo.changeSurname(id, name);
         }
+    }
+
+    public void updateBio(String id, String bio) {
+        userRepo.updateBio(id, bio);
+    }
+
+    public String retrieveBio(String id) {
+        return userRepo.getBioById(id);
     }
 
     public boolean isValidUsername(String username) {

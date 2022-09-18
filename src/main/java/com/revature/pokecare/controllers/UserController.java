@@ -33,7 +33,7 @@ public class UserController {
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/signup", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String signup(@RequestBody NewUserRequest request, @RequestParam(name = "role") String role) {
+    public @ResponseBody String signup(@RequestBody NewUserRequest request, @RequestParam(name = "role", defaultValue = "user") String role) {
         try {
             return userService.register(request, role).getUser_id();
         } catch (InvalidRequestException e) {
