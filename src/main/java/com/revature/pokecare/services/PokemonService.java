@@ -23,6 +23,10 @@ public class PokemonService {
         this.userRepo = userRepo;
     }
 
+    public Pokemon findByID(String id) {
+        return pokemonRepository.findByID(id);
+    }
+
 
     public Pokemon save(NewPokemonRequest newPokemonRequest) {
         int level = 0;
@@ -44,4 +48,16 @@ public class PokemonService {
         pokemonRepository.save(pokemon);
         return pokemon;
     }
+
+    public int getHP(String id) {
+        int hpIV = pokemonRepository.findHPIV(id);
+        int hpEV = pokemonRepository.findHPEV(id);
+        int level = pokemonRepository.findLevel(id);
+
+        int base = 1;
+        int hp = ((2*base + hpIV + (hpEV/4)*level)/100) + level + 10;
+        return hp;
+
+    }
+
 }
