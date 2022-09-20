@@ -49,4 +49,12 @@ public class PokemonController {
         return hp;
     }
 
+
+    @CrossOrigin
+    @GetMapping(value = "/viewall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Pokemon[] viewAllPokemon(HttpServletRequest req) {
+
+        return pokemonService.findByUserID(tokenService.extractRequesterDetails(req.getHeader("Authorization")).getId());
+    }
+
 }

@@ -11,6 +11,9 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
     @Query(value = "SELECT * FROM pokemon WHERE id = ?1", nativeQuery = true)
     Pokemon findByID(String id);
 
+    @Query(value = "SELECT * FROM pokemon WHERE user_id = ?1", nativeQuery = true)
+    Pokemon[] findByUserID(String user_id);
+
     @Query(value = "SELECT hpEV FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     int findHPEV(String pokemon_id);
 
