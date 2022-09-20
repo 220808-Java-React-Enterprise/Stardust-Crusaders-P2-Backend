@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PokemonRepository extends CrudRepository<Pokemon, String> {
 
@@ -12,7 +14,7 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
     Pokemon findByID(String id);
 
     @Query(value = "SELECT * FROM pokemon WHERE user_id = ?1", nativeQuery = true)
-    Pokemon[] findByUserID(String user_id);
+    List<String> findByUserID(String user_id);
 
     @Query(value = "SELECT hpEV FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     int findHPEV(String pokemon_id);

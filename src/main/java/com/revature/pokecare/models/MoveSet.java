@@ -86,6 +86,14 @@ public class MoveSet {
         this.move4 = move4;
     }
 
+    public Pokemon getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
+    }
+
     @Override
     public String toString() {
         return "MoveSet{" +
