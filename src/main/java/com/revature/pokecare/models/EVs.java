@@ -1,10 +1,9 @@
 package com.revature.pokecare.models;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "EVs")
@@ -30,6 +29,13 @@ public class EVs {
     @Column(name = "speed", nullable = false)
     private int speed;
 
+    @OneToOne(
+            mappedBy = "evs",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private Pokemon pokemon;
     public EVs(){
     }
 

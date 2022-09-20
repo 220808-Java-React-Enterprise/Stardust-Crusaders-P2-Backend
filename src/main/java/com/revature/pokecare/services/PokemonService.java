@@ -5,10 +5,7 @@ import com.revature.pokecare.models.EVs;
 import com.revature.pokecare.models.IVs;
 import com.revature.pokecare.models.MoveSet;
 import com.revature.pokecare.models.Pokemon;
-import com.revature.pokecare.repositories.EVRepository;
-import com.revature.pokecare.repositories.IVRepository;
-import com.revature.pokecare.repositories.MoveSetRepository;
-import com.revature.pokecare.repositories.PokemonRepository;
+import com.revature.pokecare.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +21,14 @@ public class PokemonService {
     private final EVRepository evRepository;
     private final IVRepository ivRepository;
     private final MoveSetRepository moveSetRepository;
+    private final UserRepository userRepository;
 
-    public PokemonService(PokemonRepository pokemonRepository, EVRepository evRepository, IVRepository ivRepository, MoveSetRepository moveSetRepository) {
+    public PokemonService(PokemonRepository pokemonRepository, EVRepository evRepository, IVRepository ivRepository, MoveSetRepository moveSetRepository, UserRepository userRepository) {
         this.pokemonRepository = pokemonRepository;
         this.evRepository = evRepository;
         this.ivRepository = ivRepository;
         this.moveSetRepository = moveSetRepository;
+        this.userRepository = userRepository;
     }
 
     public Pokemon findByID(String id) {
@@ -44,10 +43,10 @@ public class PokemonService {
     public Pokemon save(NewPokemonRequest newPokemonRequest) {
         int level = 1;
         int xp_needed = 0;
-        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), newPokemonRequest.getUser_id());
-        evRepository.save(new EVs(pokemon.getEv_id()));
-        ivRepository.save(new IVs(pokemon.getIv_id()));
-        moveSetRepository.save(new MoveSet(pokemon.getMove_id()));
+        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), false, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(newPokemonRequest.getUser_id()).get());
+        evRepository.save(pokemon.getEvs());
+        ivRepository.save(pokemon.getIvs());
+        moveSetRepository.save(pokemon.getMoveset());
         pokemonRepository.save(pokemon);
         return pokemon;
     }

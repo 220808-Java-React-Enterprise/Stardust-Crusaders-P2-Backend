@@ -1,5 +1,8 @@
 package com.revature.pokecare.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,23 +29,41 @@ public class Pokemon {
     @Column(name = "nature", nullable = false)
     private String nature;
 
+    @Column(name = "in_daycare", nullable = false)
+    private boolean in_daycare;
 
-    @Column(name = "ev_id", nullable = false)
-    private String ev_id;
+    @OneToOne
+    @JoinColumn(name = "ev_id", nullable = false)
+    @JsonBackReference
+    private EVs evs;
 
-    @Column(name = "iv_id", nullable = false)
-    private String iv_id;
+    @OneToOne
+    @JoinColumn(name = "iv_id", nullable = false)
+    @JsonBackReference
+    private IVs ivs;
 
-    @Column(name = "move_id", nullable = false)
-    private String move_id;
+    @OneToOne
+    @JoinColumn(name = "move_id", nullable = false)
+    @JsonBackReference
+    private MoveSet move_set;
 
-    @Column(name = "user_id", nullable = false)
-    private String user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    /*@OneToOne (
+            mappedBy = "pokemon",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    ) */
+
 
     public Pokemon() {
     }
 
-    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, String ev_id, String iv_id, String move_id, String user_id) {
+
+    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, boolean in_daycare, EVs evs, IVs ivs, MoveSet move_set, User user) {
         this.pokemon_id = pokemon_id;
         this.name = name;
         this.pokedex_id = pokedex_id;
@@ -50,10 +71,11 @@ public class Pokemon {
         this.xp_needed = xp_needed;
         this.ability = ability;
         this.nature = nature;
-        this.ev_id = ev_id;
-        this.iv_id = iv_id;
-        this.move_id = move_id;
-        this.user_id = user_id;
+        this.in_daycare = in_daycare;
+        this.evs = evs;
+        this.ivs = ivs;
+        this.move_set = move_set;
+        this.user = user;
     }
 
     public String getPokemon_id() {
@@ -112,36 +134,56 @@ public class Pokemon {
         this.nature = nature;
     }
 
-    public String getEv_id() {
-        return ev_id;
+    public boolean isIn_daycare() {
+        return in_daycare;
     }
 
-    public void setEv_id(String ev_id) {
-        this.ev_id = ev_id;
+    public void setIn_daycare(boolean in_daycare) {
+        this.in_daycare = in_daycare;
     }
 
-    public String getIv_id() {
-        return iv_id;
+    public EVs getEvs() {
+        return evs;
     }
 
-    public void setIv_id(String iv_id) {
-        this.iv_id = iv_id;
+    public void setEvs(EVs evs) {
+        this.evs = evs;
     }
 
-    public String getMove_id() {
-        return move_id;
+    public IVs getIvs() {
+        return ivs;
     }
 
-    public void setMove_id(String move_id) {
-        this.move_id = move_id;
+    public void setIvs(IVs ivs) {
+        this.ivs = ivs;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public MoveSet getMove_set() {
+        return move_set;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setMove_set(MoveSet move_set) {
+        this.move_set = move_set;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public MoveSet getMoveset() {
+        return move_set;
+    }
+
+    public void setMoveset(MoveSet move_set) {
+        this.move_set = move_set;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser_id(User user) {
+        this.user = user;
     }
 
     @Override
@@ -154,10 +196,11 @@ public class Pokemon {
                 ", xp_needed=" + xp_needed +
                 ", ability='" + ability + '\'' +
                 ", nature='" + nature + '\'' +
-                ", ev_id='" + ev_id + '\'' +
-                ", iv_id='" + iv_id + '\'' +
-                ", move_id='" + move_id + '\'' +
-                ", user_id='" + user_id + '\'' +
+                ", in_daycare=" + in_daycare +
+                ", evs=" + evs +
+                ", ivs=" + ivs +
+                ", move_set=" + move_set +
+                ", user=" + user +
                 '}';
     }
 }

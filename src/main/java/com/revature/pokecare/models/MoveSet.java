@@ -1,12 +1,11 @@
 package com.revature.pokecare.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "MoveSet")
+@Table(name = "move_set")
 public class MoveSet {
 
     @Id
@@ -23,6 +22,14 @@ public class MoveSet {
 
     @Column(name = "move4")
     private String move4;
+
+    @OneToOne (
+            mappedBy = "move_set",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private Pokemon pokemon;
 
     public MoveSet() {
     }

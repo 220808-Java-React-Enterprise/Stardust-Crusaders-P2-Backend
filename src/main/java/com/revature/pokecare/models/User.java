@@ -35,18 +35,25 @@ public class User {
     @Column(name = "salt", nullable = false)
     private byte[] salt;
 
-//    @OneToMany (
-//            mappedBy = "user",
-//            fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL
-//    )
-//    @JsonManagedReference
-//    private List<Pokemon> pokemons;
+    @Column(name = "bio")
+    private String bio;
+
+    @OneToMany (
+            mappedBy = "user",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Pokemon> pokemon;
 
     public User() {
     }
 
-    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt) {
+    public User(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt, String bio) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
@@ -56,6 +63,7 @@ public class User {
         this.role = role;
         this.isActive = isActive;
         this.salt = salt;
+        this.bio = bio;
     }
 
     public String getUser_id() {
@@ -130,6 +138,22 @@ public class User {
         this.salt = salt;
     }
 
+    public List<Pokemon> getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(List<Pokemon> pokemon) {
+        this.pokemon = pokemon;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -140,7 +164,8 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" + isActive + + '\'' +
+                ", bio='" + bio +
                 '}';
     }
 }
