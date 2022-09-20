@@ -1,6 +1,7 @@
 package com.revature.pokecare.services;
 
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
+import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.EVs;
 import com.revature.pokecare.models.IVs;
 import com.revature.pokecare.models.MoveSet;
@@ -9,9 +10,7 @@ import com.revature.pokecare.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PokemonService {
@@ -35,8 +34,24 @@ public class PokemonService {
         return pokemonRepository.findByID(id);
     }
 
-    public Pokemon[] findByUserID(String user_id) {
+    public List<String> findByUserID(String user_id) {
         return pokemonRepository.findByUserID(user_id);
+    }
+
+    public List<ViewPokemon> getByUserId(String user_id) {
+        List<ViewPokemon> result = new ArrayList<>();
+        List<String> mons = pokemonRepository.findByUserID(user_id);
+        for (String s : mons) {
+            String[] arr = s.split(",");
+            try {
+                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], Boolean.parseBoolean(arr[2]), Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
+                result.add(mon);
+            } catch (InputMismatchException e) {
+                e.getStackTrace();
+                throw new InputMismatchException();
+            }
+        }
+        return result;
     }
 
 
