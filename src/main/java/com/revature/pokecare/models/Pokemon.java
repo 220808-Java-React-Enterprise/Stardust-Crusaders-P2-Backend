@@ -20,7 +20,7 @@ public class Pokemon {
     @Column(name = "level", nullable = false)
     private int level;
 
-    @Column(name = "xp_needed", nullable = false)
+    @Column(name = "xp_needed")
     private int xp_needed;
 
     @Column(name = "ability", nullable = false)
@@ -29,47 +29,41 @@ public class Pokemon {
     @Column(name = "nature", nullable = false)
     private String nature;
 
-    @Column(name = "hpIV", nullable = false)
-    private int hpIV;
+    @Column(name = "in_daycare", nullable = false)
+    private boolean in_daycare;
 
-    @Column(name = "hpEV", nullable = false)
-    private int hpEV;
+    @OneToOne
+    @JoinColumn(name = "ev_id", nullable = false)
+    @JsonBackReference
+    private EVs evs;
 
-    @Column(name = "attack", nullable = false)
-    private int attack;
+    @OneToOne
+    @JoinColumn(name = "iv_id", nullable = false)
+    @JsonBackReference
+    private IVs ivs;
 
-    @Column(name = "special_attack", nullable = false)
-    private int special_attack;
-
-    @Column(name = "defense", nullable = false)
-    private int defense;
-
-    @Column(name = "special_defense", nullable = false)
-    private int special_defense;
-
-    @Column(name = "speed", nullable = false)
-    private int speed;
-
-    @Column(name = "daycare_id", nullable = false)
-    private String daycare_id;
+    @OneToOne
+    @JoinColumn(name = "move_id", nullable = false)
+    @JsonBackReference
+    private MoveSet move_set;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
 
-    @OneToMany (
+    /*@OneToOne (
             mappedBy = "pokemon",
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
-    )
-    @JsonManagedReference
-    private PokemonMove moveset;
+    ) */
+
 
     public Pokemon() {
     }
 
-    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, int hpIV, int hpEV, int attack, int special_attack, int defense, int special_defense, int speed, String daycare_id, User user) {
+
+    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, boolean in_daycare, EVs evs, IVs ivs, MoveSet move_set, User user) {
         this.pokemon_id = pokemon_id;
         this.name = name;
         this.pokedex_id = pokedex_id;
@@ -77,14 +71,10 @@ public class Pokemon {
         this.xp_needed = xp_needed;
         this.ability = ability;
         this.nature = nature;
-        this.hpIV = hpIV;
-        this.hpEV = hpEV;
-        this.attack = attack;
-        this.special_attack = special_attack;
-        this.defense = defense;
-        this.special_defense = special_defense;
-        this.speed = speed;
-        this.daycare_id = daycare_id;
+        this.in_daycare = in_daycare;
+        this.evs = evs;
+        this.ivs = ivs;
+        this.move_set = move_set;
         this.user = user;
     }
 
@@ -144,68 +134,48 @@ public class Pokemon {
         this.nature = nature;
     }
 
-    public int getHpIV() {
-        return hpIV;
+    public boolean isIn_daycare() {
+        return in_daycare;
     }
 
-    public void setHpIV(int hpIV) {
-        this.hpIV = hpIV;
+    public void setIn_daycare(boolean in_daycare) {
+        this.in_daycare = in_daycare;
     }
 
-    public int getHpEV() {
-        return hpEV;
+    public EVs getEvs() {
+        return evs;
     }
 
-    public void setHpEV(int hpEV) {
-        this.hpEV = hpEV;
+    public void setEvs(EVs evs) {
+        this.evs = evs;
     }
 
-    public int getAttack() {
-        return attack;
+    public IVs getIvs() {
+        return ivs;
     }
 
-    public void setAttack(int attack) {
-        this.attack = attack;
+    public void setIvs(IVs ivs) {
+        this.ivs = ivs;
     }
 
-    public int getSpecial_attack() {
-        return special_attack;
+    public MoveSet getMove_set() {
+        return move_set;
     }
 
-    public void setSpecial_attack(int special_attack) {
-        this.special_attack = special_attack;
+    public void setMove_set(MoveSet move_set) {
+        this.move_set = move_set;
     }
 
-    public int getDefense() {
-        return defense;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setDefense(int defense) {
-        this.defense = defense;
+    public MoveSet getMoveset() {
+        return move_set;
     }
 
-    public int getSpecial_defense() {
-        return special_defense;
-    }
-
-    public void setSpecial_defense(int special_defense) {
-        this.special_defense = special_defense;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public String getDaycare_id() {
-        return daycare_id;
-    }
-
-    public void setDaycare_id(String daycare_id) {
-        this.daycare_id = daycare_id;
+    public void setMoveset(MoveSet move_set) {
+        this.move_set = move_set;
     }
 
     public User getUser() {
@@ -214,14 +184,6 @@ public class Pokemon {
 
     public void setUser_id(User user) {
         this.user = user;
-    }
-
-    public PokemonMove getMoveset() {
-        return moveset;
-    }
-
-    public void setMoveset(PokemonMove moveset) {
-        this.moveset = moveset;
     }
 
     @Override
@@ -234,16 +196,11 @@ public class Pokemon {
                 ", xp_needed=" + xp_needed +
                 ", ability='" + ability + '\'' +
                 ", nature='" + nature + '\'' +
-                ", hpIV=" + hpIV +
-                ", hpEV=" + hpEV +
-                ", attack=" + attack +
-                ", special_attack=" + special_attack +
-                ", defense=" + defense +
-                ", special_defense=" + special_defense +
-                ", speed=" + speed +
-                ", daycare_id='" + daycare_id + '\'' +
-                ", user_id='" + user + '\'' +
-                ", moveset='" + moveset + '\'' +
+                ", in_daycare=" + in_daycare +
+                ", evs=" + evs +
+                ", ivs=" + ivs +
+                ", move_set=" + move_set +
+                ", user=" + user +
                 '}';
     }
 }
