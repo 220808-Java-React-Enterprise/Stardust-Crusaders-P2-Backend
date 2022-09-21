@@ -27,7 +27,7 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    @CrossOrigin
+    @CrossOrigin(exposedHeaders = "user-auth")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
