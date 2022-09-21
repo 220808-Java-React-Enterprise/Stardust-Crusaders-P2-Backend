@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,6 +59,26 @@ public class PokemonController {
     public @ResponseBody List<ViewPokemon> viewAllPokemon(@RequestHeader(name = "Authorization") String token) {
         try {
             return pokemonService.getByUserId(tokenService.extractRequesterDetails(token).getId());
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/viewindaycare", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<ViewPokemon> viewInDaycare(@RequestHeader(name = "Authorization") String token) {
+        try {
+            List<ViewPokemon> vp = new ArrayList<>();
+            for (ViewPokemon p : pokemonService.getByUserId(tokenService.extractRequesterDetails(token).getId())) {
+                if (p.isIn_daycare()) {vp.add(p);}
+            }
+            return vp;
         } catch (InvalidRequestException e) {
             e.getStackTrace();
             System.out.println(e.getMessage());
