@@ -54,6 +54,22 @@ public class PokemonService {
         return result;
     }
 
+    public List<ViewPokemon> getFromDaycare(String user_id) {
+        List<ViewPokemon> result = new ArrayList<>();
+        List<String> mons = pokemonRepository.getFromDaycare(user_id);
+        for (String s : mons) {
+            String[] arr = s.split(",");
+            try {
+                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], Boolean.parseBoolean(arr[2]), Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
+                result.add(mon);
+            } catch (InputMismatchException e) {
+                e.getStackTrace();
+                throw new InputMismatchException();
+            }
+        }
+        return result;
+    }
+
 
     public Pokemon save(NewPokemonRequest newPokemonRequest) {
         int level = 1;

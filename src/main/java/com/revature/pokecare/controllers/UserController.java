@@ -82,7 +82,7 @@ public class UserController {
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = "update_password", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String updateUserPassword(@RequestBody NewPasswordRequest request, @RequestHeader(name = "Authorization") String token) {
+    public @ResponseBody String updateUserPassword(@RequestBody NewPasswordRequest request, @RequestHeader(name = "user-auth") String token) {
         Principal principal = tokenService.extractRequesterDetails(token);
         String userId = principal.getId();
 

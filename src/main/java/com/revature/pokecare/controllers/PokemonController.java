@@ -40,7 +40,7 @@ public class PokemonController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/save", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String savePokemon(@RequestBody NewPokemonRequest newPokemonRequest, HttpServletRequest req) {
-        newPokemonRequest.setUser_id(tokenService.extractRequesterDetails(req.getHeader("Authorization")).getId());
+        newPokemonRequest.setUser_id(tokenService.extractRequesterDetails(req.getHeader("user-auth")).getId());
         return pokemonService.save(newPokemonRequest).getPokemon_id();
     }
 
@@ -56,7 +56,7 @@ public class PokemonController {
 
     @CrossOrigin
     @GetMapping(value = "/viewall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<ViewPokemon> viewAllPokemon(@RequestHeader(name = "Authorization") String token) {
+    public @ResponseBody List<ViewPokemon> viewAllPokemon(@RequestHeader(name = "user-auth") String token) {
         try {
             return pokemonService.getByUserId(tokenService.extractRequesterDetails(token).getId());
         } catch (InvalidRequestException e) {
@@ -72,7 +72,7 @@ public class PokemonController {
 
     @CrossOrigin
     @GetMapping(value = "/viewindaycare", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<ViewPokemon> viewInDaycare(@RequestHeader(name = "Authorization") String token) {
+    public @ResponseBody List<ViewPokemon> viewInDaycare(@RequestHeader(name = "user-auth") String token) {
         try {
             List<ViewPokemon> vp = new ArrayList<>();
             for (ViewPokemon p : pokemonService.getByUserId(tokenService.extractRequesterDetails(token).getId())) {

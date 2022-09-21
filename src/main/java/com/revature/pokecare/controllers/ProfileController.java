@@ -29,7 +29,7 @@ public class ProfileController {
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String retrieveUserBio(@RequestBody UserBioRequest request, @RequestHeader(name = "Authorization") String token) {
+    public @ResponseBody String retrieveUserBio(@RequestBody UserBioRequest request, @RequestHeader(name = "user-auth") String token) {
         Principal principal = tokenService.extractRequesterDetails(token);
 
         try {

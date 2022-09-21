@@ -34,7 +34,7 @@ public class AuthController {
         try {
             Principal principal = userService.login(request);
             String token = tokenService.generateToken(principal);
-            resp.setHeader("Authorization", token);
+            resp.setHeader("user-auth", token);
             return principal;
         } catch (InvalidRequestException e) {
             e.getStackTrace();

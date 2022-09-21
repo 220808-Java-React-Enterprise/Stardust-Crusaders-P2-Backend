@@ -29,7 +29,7 @@ public class AdminController {
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = "/activate", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String activateUser(@RequestBody UserIdRequest request, @RequestParam(name = "value") String value, @RequestHeader(name = "Authorization") String token) {
+    public @ResponseBody String activateUser(@RequestBody UserIdRequest request, @RequestParam(name = "value") String value, @RequestHeader(name = "user-auth") String token) {
         Principal principal = tokenService.extractRequesterDetails(token);
         if (!principal.getRole().equals("admin")) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
