@@ -9,6 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "SELECT * FROM users WHERE username = ?1 AND password = ?2", nativeQuery = true)
@@ -66,4 +68,12 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Modifying
     @Query(value = "UPDATE users SET bio = ?2 WHERE user_id = ?1", nativeQuery = true)
     void updateBio(String id, String bio);
+
+    @Query(value = "SELECT last_login FROM users WHERE user_id = ?1", nativeQuery = true)
+    Timestamp getLastLogin(String id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET last_login = ?1 WHERE user_id = ?2", nativeQuery = true)
+    void updateLastLogin(Timestamp ts, String id);
 }
