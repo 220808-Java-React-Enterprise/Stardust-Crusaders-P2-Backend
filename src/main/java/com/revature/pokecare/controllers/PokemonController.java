@@ -90,6 +90,23 @@ public class PokemonController {
         }
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/viewbyid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ViewPokemon viewByID(@RequestBody PokemonIDRequest pokemonIDRequest) {
+        try {
+            System.out.println(pokemonIDRequest.getPokemon_id());
+            return pokemonService.findByID(pokemonIDRequest.getPokemon_id());
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
     @ExceptionHandler(value = InvalidRequestException.class)
     public ResponseEntity<Object> exception(InvalidRequestException exception) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

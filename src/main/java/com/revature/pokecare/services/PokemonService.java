@@ -31,8 +31,15 @@ public class PokemonService {
         this.userRepository = userRepository;
     }
 
-    public Pokemon findByID(String id) {
-        return pokemonRepository.findByID(id);
+    public ViewPokemon findByID(String id) {
+        String s = pokemonRepository.findByID(id);
+        String[] arr = s.split(",");
+        try {
+            return new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
+        } catch (InputMismatchException e) {
+            e.getStackTrace();
+            throw new InputMismatchException();
+        }
     }
 
     public List<String> findByUserID(String user_id) {
@@ -55,22 +62,6 @@ public class PokemonService {
             }
         }
         System.out.println(result);
-        return result;
-    }
-
-    public List<ViewPokemon> getFromDaycare(String user_id) {
-        List<ViewPokemon> result = new ArrayList<>();
-        List<String> mons = pokemonRepository.getFromDaycare(user_id);
-        for (String s : mons) {
-            String[] arr = s.split(",");
-            try {
-                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
-                result.add(mon);
-            } catch (InputMismatchException e) {
-                e.getStackTrace();
-                throw new InputMismatchException();
-            }
-        }
         return result;
     }
 
