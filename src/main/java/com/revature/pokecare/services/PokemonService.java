@@ -96,4 +96,14 @@ public class PokemonService {
 
     }
 
+    public void updateXP(String id) {
+        Timestamp lastLogin = userRepository.getLastLogin(id);
+        Calendar cal = Calendar.getInstance();
+        Timestamp currentTime = new Timestamp(cal.getTimeInMillis());
+        long diff = (currentTime.getTime() - lastLogin.getTime())/1000/60;
+        userRepository.updateLastLogin(currentTime, id);
+        int xpToAdd = (int) diff * 10;
+        
+    }
+
 }
