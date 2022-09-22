@@ -1,5 +1,6 @@
 package com.revature.pokecare.repositories;
 
+import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.Pokemon;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +13,8 @@ import java.util.List;
 @Repository
 public interface PokemonRepository extends CrudRepository<Pokemon, String> {
 
-    @Query(value = "SELECT * FROM pokemon WHERE id = ?1", nativeQuery = true)
-    Pokemon findByID(String id);
+    @Query(value = "SELECT * FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String findByID(String id);
 
     @Query(value = "SELECT * FROM pokemon WHERE user_id = ?1", nativeQuery = true)
     List<String> findByUserID(String user_id);

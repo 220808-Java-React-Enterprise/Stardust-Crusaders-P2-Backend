@@ -5,10 +5,14 @@ import com.revature.pokecare.models.IVs;
 import com.revature.pokecare.models.MoveSet;
 import com.revature.pokecare.models.User;
 
+import java.sql.Date;
+
 public class ViewPokemon {
 
     private String pokemon_id;
     private String ability;
+
+    private String enroll_date;
     private boolean in_daycare;
     private int level;
     private String name;
@@ -23,9 +27,10 @@ public class ViewPokemon {
     public ViewPokemon(){
     }
 
-    public ViewPokemon(String pokemon_id, String ability, boolean in_daycare, int level, String name, String nature, int pokedex_id, int xp_needed, String ev_id, String iv_id, String move_id, String user_id) {
+    public ViewPokemon(String pokemon_id, String ability, String enroll_date, boolean in_daycare, int level, String name, String nature, int pokedex_id, int xp_needed, String ev_id, String iv_id, String move_id, String user_id) {
         this.pokemon_id = pokemon_id;
         this.ability = ability;
+        this.enroll_date = enroll_date;
         this.in_daycare = in_daycare;
         this.level = level;
         this.name = name;
@@ -132,6 +137,14 @@ public class ViewPokemon {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getEnroll_date() {
+        return enroll_date;
+    }
+
+    public void setEnroll_date(String enroll_date) {
+        this.enroll_date = enroll_date;
     }
 
     @Override
