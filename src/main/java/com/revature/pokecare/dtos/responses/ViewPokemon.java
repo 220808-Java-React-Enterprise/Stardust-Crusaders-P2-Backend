@@ -13,7 +13,6 @@ public class ViewPokemon {
     private String ability;
 
     private String enroll_date;
-    private boolean in_daycare;
     private int level;
     private String name;
     private String nature;
@@ -27,11 +26,10 @@ public class ViewPokemon {
     public ViewPokemon(){
     }
 
-    public ViewPokemon(String pokemon_id, String ability, String enroll_date, boolean in_daycare, int level, String name, String nature, int pokedex_id, int xp_needed, String ev_id, String iv_id, String move_id, String user_id) {
+    public ViewPokemon(String pokemon_id, String ability, String enroll_date, int level, String name, String nature, int pokedex_id, int xp_needed, String ev_id, String iv_id, String move_id, String user_id) {
         this.pokemon_id = pokemon_id;
         this.ability = ability;
         this.enroll_date = enroll_date;
-        this.in_daycare = in_daycare;
         this.level = level;
         this.name = name;
         this.nature = nature;
@@ -57,14 +55,6 @@ public class ViewPokemon {
 
     public void setAbility(String ability) {
         this.ability = ability;
-    }
-
-    public boolean isIn_daycare() {
-        return in_daycare;
-    }
-
-    public void setIn_daycare(boolean in_daycare) {
-        this.in_daycare = in_daycare;
     }
 
     public int getLevel() {
@@ -152,7 +142,6 @@ public class ViewPokemon {
         return "ViewPokemon{" +
                 "pokemon_id='" + pokemon_id + '\'' +
                 ", ability='" + ability + '\'' +
-                ", in_daycare=" + in_daycare +
                 ", level=" + level +
                 ", name='" + name + '\'' +
                 ", nature='" + nature + '\'' +

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/pokemon")
@@ -76,7 +77,7 @@ public class PokemonController {
         try {
             List<ViewPokemon> vp = new ArrayList<>();
             for (ViewPokemon p : pokemonService.getByUserId(tokenService.extractRequesterDetails(token).getId())) {
-                if (p.isIn_daycare()) {vp.add(p);}
+                if (!Objects.equals(p.getEnroll_date(), "null")) {vp.add(p);}
             }
             return vp;
         } catch (InvalidRequestException e) {
@@ -96,6 +97,22 @@ public class PokemonController {
         try {
             System.out.println(pokemonIDRequest.getPokemon_id());
             return pokemonService.findByID(pokemonIDRequest.getPokemon_id());
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/enrollpoke", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody void enrollPoke(@RequestBody PokemonIDRequest pokemonIDRequest) {
+        try {
+            pokemonService.enrollPoke(pokemonIDRequest.getPokemon_id());
         } catch (InvalidRequestException e) {
             e.getStackTrace();
             System.out.println(e.getMessage());

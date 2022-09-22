@@ -8,6 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -30,6 +32,11 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
 
     @Query(value = "SELECT level FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     int findLevel(String pokemon_id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE pokemon SET enroll_date = ?1 WHERE pokemon_id = ?2", nativeQuery = true)
+    void enrollPoke(Timestamp date, String pokemon_id);
 
     @Transactional
     @Modifying
