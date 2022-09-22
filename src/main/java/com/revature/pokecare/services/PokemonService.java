@@ -10,6 +10,7 @@ import com.revature.pokecare.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.*;
 
 @Service
@@ -41,16 +42,19 @@ public class PokemonService {
     public List<ViewPokemon> getByUserId(String user_id) {
         List<ViewPokemon> result = new ArrayList<>();
         List<String> mons = pokemonRepository.findByUserID(user_id);
+        System.out.println(mons);
         for (String s : mons) {
             String[] arr = s.split(",");
             try {
-                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], Boolean.parseBoolean(arr[2]), Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
+                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
                 result.add(mon);
+                System.out.println(mon);
             } catch (InputMismatchException e) {
                 e.getStackTrace();
                 throw new InputMismatchException();
             }
         }
+        System.out.println(result);
         return result;
     }
 
@@ -60,7 +64,7 @@ public class PokemonService {
         for (String s : mons) {
             String[] arr = s.split(",");
             try {
-                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], Boolean.parseBoolean(arr[2]), Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
+                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
                 result.add(mon);
             } catch (InputMismatchException e) {
                 e.getStackTrace();
@@ -74,7 +78,7 @@ public class PokemonService {
     public Pokemon save(NewPokemonRequest newPokemonRequest) {
         int level = 1;
         int xp_needed = 0;
-        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), false, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(newPokemonRequest.getUser_id()).get());
+        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), false, null, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(newPokemonRequest.getUser_id()).get());
         evRepository.save(pokemon.getEvs());
         ivRepository.save(pokemon.getIvs());
         moveSetRepository.save(pokemon.getMoveset());

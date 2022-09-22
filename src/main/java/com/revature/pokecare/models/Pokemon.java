@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "pokemon")
@@ -29,8 +30,11 @@ public class Pokemon {
     @Column(name = "nature", nullable = false)
     private String nature;
 
-    @Column(name = "in_daycare", nullable = false)
+    @Column(name = "in_daycare")
     private boolean in_daycare;
+
+    @Column(name = "enroll_date")
+    private Date enroll_date;
 
     @OneToOne
     @JoinColumn(name = "ev_id", nullable = false)
@@ -63,7 +67,7 @@ public class Pokemon {
     }
 
 
-    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, boolean in_daycare, EVs evs, IVs ivs, MoveSet move_set, User user) {
+    public Pokemon(String pokemon_id, String name, int pokedex_id, int level, int xp_needed, String ability, String nature, boolean in_daycare, Date enroll_date, EVs evs, IVs ivs, MoveSet move_set, User user) {
         this.pokemon_id = pokemon_id;
         this.name = name;
         this.pokedex_id = pokedex_id;
@@ -72,6 +76,7 @@ public class Pokemon {
         this.ability = ability;
         this.nature = nature;
         this.in_daycare = in_daycare;
+        this.enroll_date = enroll_date;
         this.evs = evs;
         this.ivs = ivs;
         this.move_set = move_set;
@@ -140,6 +145,14 @@ public class Pokemon {
 
     public void setIn_daycare(boolean in_daycare) {
         this.in_daycare = in_daycare;
+    }
+
+    public Date getEnroll_date() {
+        return enroll_date;
+    }
+
+    public void setEnroll_date(Date enroll_date) {
+        this.enroll_date = enroll_date;
     }
 
     public EVs getEvs() {
