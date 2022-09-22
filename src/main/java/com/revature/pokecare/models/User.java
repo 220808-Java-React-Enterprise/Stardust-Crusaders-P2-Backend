@@ -3,6 +3,7 @@ package com.revature.pokecare.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -38,6 +39,9 @@ public class User {
     @Column(name = "bio")
     private String bio;
 
+    @Column(name = "last_login")
+    private Timestamp last_login;
+
     @OneToMany (
             mappedBy = "user",
             fetch = FetchType.EAGER,
@@ -53,7 +57,7 @@ public class User {
         this.user_id = user_id;
     }
 
-    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt, String bio) {
+    public User(String user_id, String username, String password, String given_name, String surname, String email, String role, boolean isActive, byte[] salt, String bio, Timestamp last_login) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
@@ -64,6 +68,7 @@ public class User {
         this.isActive = isActive;
         this.salt = salt;
         this.bio = bio;
+        this.last_login = last_login;
     }
 
     public String getUser_id() {
@@ -152,6 +157,14 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public Timestamp getLast_login() {
+        return last_login;
+    }
+
+    public void setLast_login(Timestamp last_login) {
+        this.last_login = last_login;
     }
 
     @Override
