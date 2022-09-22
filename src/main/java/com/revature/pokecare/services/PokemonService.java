@@ -1,6 +1,7 @@
 package com.revature.pokecare.services;
 
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
+import com.revature.pokecare.dtos.requests.PokemonIDRequest;
 import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.EVs;
 import com.revature.pokecare.models.IVs;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -35,7 +37,7 @@ public class PokemonService {
         String s = pokemonRepository.findByID(id);
         String[] arr = s.split(",");
         try {
-            return new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
+            return new ViewPokemon(arr[0], arr[1], arr[2], Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
         } catch (InputMismatchException e) {
             e.getStackTrace();
             throw new InputMismatchException();
@@ -53,7 +55,7 @@ public class PokemonService {
         for (String s : mons) {
             String[] arr = s.split(",");
             try {
-                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], arr[2], Boolean.parseBoolean(arr[3]), Integer.parseInt(arr[4]), arr[5], arr[6], Integer.parseInt(arr[7]), Integer.parseInt(arr[8]), arr[9], arr[10], arr[11], arr[12]);
+                ViewPokemon mon = new ViewPokemon(arr[0], arr[1], arr[2], Integer.parseInt(arr[3]), arr[4], arr[5], Integer.parseInt(arr[6]), Integer.parseInt(arr[7]), arr[8], arr[9], arr[10], arr[11]);
                 result.add(mon);
                 System.out.println(mon);
             } catch (InputMismatchException e) {
@@ -69,12 +71,18 @@ public class PokemonService {
     public Pokemon save(NewPokemonRequest newPokemonRequest) {
         int level = 1;
         int xp_needed = 0;
-        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), false, null, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(newPokemonRequest.getUser_id()).get());
+        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), newPokemonRequest.getName(), newPokemonRequest.getPokedex_id(), level, xp_needed, newPokemonRequest.getAbility(), newPokemonRequest.getNature(), null, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(newPokemonRequest.getUser_id()).get());
         evRepository.save(pokemon.getEvs());
         ivRepository.save(pokemon.getIvs());
         moveSetRepository.save(pokemon.getMoveset());
         pokemonRepository.save(pokemon);
         return pokemon;
+    }
+
+    public void enrollPoke(String pokemon_id) {
+        Calendar cal = Calendar.getInstance();
+        Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+        pokemonRepository.enrollPoke(timestamp, pokemon_id);
     }
 
     public int getHP(String id) {
