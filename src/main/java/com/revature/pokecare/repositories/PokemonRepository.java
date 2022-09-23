@@ -33,6 +33,15 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
     @Query(value = "SELECT level FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     int findLevel(String pokemon_id);
 
+    @Query(value = "SELECT pokemon_id FROM pokemon WHERE user_id = ?1", nativeQuery = true)
+    String[] getIDs(String user_id);
+
+    @Query(value = "SELECT xp_needed FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    int getXP(String pokemon_id);
+
+    @Query(value = "SELECT enroll_date FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    Timestamp getDateEnrolled(String pokemon_id);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE pokemon SET enroll_date = ?1 WHERE pokemon_id = ?2", nativeQuery = true)
@@ -42,5 +51,15 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
     @Modifying
     @Query(value = "UPDATE pokemon SET in_daycare = ?2 WHERE pokemon_id = ?1", nativeQuery = true)
     void setDaycareStatus(String id, boolean isActive);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE pokemon SET level = ?2 WHERE pokemon_id = ?1", nativeQuery = true)
+    void setNewLevel(String id, int newLevel);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE pokemon SET xp_needed = ?2 WHERE pokemon_id = ?1", nativeQuery = true)
+    void setNewXP(String id, int newXP);
 
 }

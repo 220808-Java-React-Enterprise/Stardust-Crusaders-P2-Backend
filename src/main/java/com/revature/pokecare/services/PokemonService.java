@@ -101,9 +101,22 @@ public class PokemonService {
         Calendar cal = Calendar.getInstance();
         Timestamp currentTime = new Timestamp(cal.getTimeInMillis());
         long diff = (currentTime.getTime() - lastLogin.getTime())/1000/60;
-        userRepository.updateLastLogin(currentTime, id);
         int xpToAdd = (int) diff * 10;
-        
+        String[] pokeIDs = pokemonRepository.getIDs(id);
+        for (String p : pokeIDs) {
+            if (pokemonRepository.getDateEnrolled(p)!=null) {
+                int xp = pokemonRepository.getXP(p);
+                int totalXP = xp + xpToAdd;
+                if (totalXP/100>0) {
+                    int level = pokemonRepository.findLevel(p);
+                    int newLevel = level + (totalXP/100);
+                    pokemonRepository.setNewLevel(p, newLevel);
+                }
+                int newXP = totalXP%100;
+                pokemonRepository.setNewXP(p, newXP);
+            }
+        }
+        userRepository.updateLastLogin(currentTime, id);
     }
 
 }
