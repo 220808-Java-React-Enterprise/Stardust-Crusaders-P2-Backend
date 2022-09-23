@@ -1,6 +1,7 @@
 package com.revature.pokecare.controllers;
 
 
+import com.revature.pokecare.dtos.requests.NewEggRequest;
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
 import com.revature.pokecare.dtos.requests.PokemonIDRequest;
 import com.revature.pokecare.dtos.responses.ViewPokemon;
@@ -113,6 +114,41 @@ public class PokemonController {
     public @ResponseBody void enrollPoke(@RequestBody PokemonIDRequest pokemonIDRequest) {
         try {
             pokemonService.enrollPoke(pokemonIDRequest.getPokemon_id());
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/createegg", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String createEgg(@RequestHeader(name = "user-auth") String token, @RequestBody NewEggRequest newEggRequest) {
+        try {
+            String user_id = tokenService.extractRequesterDetails(token).getId();
+            String pokemon_id1 = newEggRequest.getPokemon_id1();
+            String pokemon_id2 = newEggRequest.getPokemon_id2();
+            return pokemonService.createEgg(pokemon_id1, pokemon_id2, user_id);
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/hatchegg", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String hatchEgg(@RequestBody PokemonIDRequest pokemonIDRequest) {
+        try {
+            return pokemonService.hatchEgg(pokemonIDRequest.getPokemon_id());
         } catch (InvalidRequestException e) {
             e.getStackTrace();
             System.out.println(e.getMessage());
