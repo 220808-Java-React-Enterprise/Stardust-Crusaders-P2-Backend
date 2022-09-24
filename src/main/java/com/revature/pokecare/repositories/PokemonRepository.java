@@ -24,12 +24,6 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
     @Query(value = "SELECT * FROM pokemon WHERE user_id = ?1 AND in_daycare = true", nativeQuery = true)
     List<String> getFromDaycare(String user_id);
 
-    @Query(value = "SELECT hpEV FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
-    int findHPEV(String pokemon_id);
-
-    @Query(value = "SELECT hpIV FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
-    int findHPIV(String pokemon_id);
-
     @Query(value = "SELECT level FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     int findLevel(String pokemon_id);
 
@@ -41,6 +35,24 @@ public interface PokemonRepository extends CrudRepository<Pokemon, String> {
 
     @Query(value = "SELECT enroll_date FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
     Timestamp getDateEnrolled(String pokemon_id);
+
+    @Query(value = "SELECT name FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String getName(String pokemon_id);
+
+    @Query(value = "SELECT pokedex_id FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String getPokedexID(String pokemon_id);
+
+    @Query(value = "SELECT ability FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String getAbility(String pokemon_id);
+
+    @Query(value = "SELECT nature FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String getNature(String pokemon_id);
+
+    @Query(value = "SELECT level FROM pokemon WHERE user_id = ?1", nativeQuery = true)
+    Integer[] pokeLevelsFromUserID(String user_id);
+
+    @Query(value = "SELECT ev_id FROM pokemon WHERE pokemon_id = ?1", nativeQuery = true)
+    String getEVID(String pokemon_id);
 
     @Transactional
     @Modifying

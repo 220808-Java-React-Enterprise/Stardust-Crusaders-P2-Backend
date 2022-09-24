@@ -2,12 +2,14 @@ package com.revature.pokecare.services;
 
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
 import com.revature.pokecare.dtos.requests.PokemonIDRequest;
+import com.revature.pokecare.dtos.requests.SetEVRequest;
 import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.EVs;
 import com.revature.pokecare.models.IVs;
 import com.revature.pokecare.models.MoveSet;
 import com.revature.pokecare.models.Pokemon;
 import com.revature.pokecare.repositories.*;
+import com.revature.pokecare.utils.custom_exceptions.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,15 +87,19 @@ public class PokemonService {
         pokemonRepository.enrollPoke(timestamp, pokemon_id);
     }
 
+    public void removeFromDaycare(String pokemon_id) {
+        pokemonRepository.enrollPoke(null, pokemon_id);
+    }
+
     public int getHP(String id) {
-        int hpIV = pokemonRepository.findHPIV(id);
+        /*int hpIV = pokemonRepository.findHPIV(id);
         int hpEV = pokemonRepository.findHPEV(id);
         int level = pokemonRepository.findLevel(id);
 
         int base = 1;
         int hp = ((2*base + hpIV + (hpEV/4)*level)/100) + level + 10;
-        return hp;
-
+        return hp; */
+        return 0;
     }
 
     public void updateXP(String id) {
@@ -110,13 +116,48 @@ public class PokemonService {
                 if (totalXP/100>0) {
                     int level = pokemonRepository.findLevel(p);
                     int newLevel = level + (totalXP/100);
-                    pokemonRepository.setNewLevel(p, newLevel);
+                    pokemonRepository.setNewLevel(p, Math.min(newLevel, 100));
                 }
                 int newXP = totalXP%100;
                 pokemonRepository.setNewXP(p, newXP);
             }
         }
         userRepository.updateLastLogin(currentTime, id);
+    }
+
+    public String createEgg(String p1, String p2, String user_id) {
+        Integer[] levels = pokemonRepository.pokeLevelsFromUserID(user_id);
+        if (!Arrays.asList(levels).contains(0)) {
+            if (pokemonRepository.getDateEnrolled(p1)!=null && pokemonRepository.getDateEnrolled(p2)!=null) {
+                final Random random = new Random();
+                final int millisInDay = 60 * 1000 * (random.nextInt(10) + 1);
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), pokemonRepository.getName(p1), Integer.parseInt(pokemonRepository.getPokedexID(p1)), 0, 0, pokemonRepository.getAbility(p2), pokemonRepository.getNature(p2), null, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(user_id).get());
+                        evRepository.save(pokemon.getEvs());
+                        ivRepository.save(pokemon.getIvs());
+                        moveSetRepository.save(pokemon.getMoveset());
+                        pokemonRepository.save(pokemon);
+                    }
+                };
+                Timer timer = new Timer("Timer");
+                timer.schedule(task, millisInDay);
+                return "Egg will be created within two hours!";
+            } else {
+                return "Both pokemons need to be enrolled in the daycare to create an egg!";
+            }
+        } else {
+            return "User can only have one unhatched egg at a time!";
+        }
+    }
+
+    public String hatchEgg(String id) {
+        if (pokemonRepository.findLevel(id)!=0) {
+            return "This pokemon is not in an egg!";
+        } else {
+            pokemonRepository.setNewLevel(id, 1);
+            return "Egg hatched successfully!";
+        }
     }
 
 }
