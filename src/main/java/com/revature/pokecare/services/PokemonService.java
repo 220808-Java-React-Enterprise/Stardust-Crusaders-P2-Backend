@@ -2,6 +2,7 @@ package com.revature.pokecare.services;
 
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
 import com.revature.pokecare.dtos.requests.PokemonIDRequest;
+import com.revature.pokecare.dtos.requests.SetEVRequest;
 import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.EVs;
 import com.revature.pokecare.models.IVs;
@@ -86,15 +87,19 @@ public class PokemonService {
         pokemonRepository.enrollPoke(timestamp, pokemon_id);
     }
 
+    public void removeFromDaycare(String pokemon_id) {
+        pokemonRepository.enrollPoke(null, pokemon_id);
+    }
+
     public int getHP(String id) {
-        int hpIV = pokemonRepository.findHPIV(id);
+        /*int hpIV = pokemonRepository.findHPIV(id);
         int hpEV = pokemonRepository.findHPEV(id);
         int level = pokemonRepository.findLevel(id);
 
         int base = 1;
         int hp = ((2*base + hpIV + (hpEV/4)*level)/100) + level + 10;
-        return hp;
-
+        return hp; */
+        return 0;
     }
 
     public void updateXP(String id) {
