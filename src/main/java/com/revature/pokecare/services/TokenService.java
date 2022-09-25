@@ -13,11 +13,7 @@ import java.util.Date;
 @Service
 public class TokenService {
     @Autowired
-    private JwtConfig jwtConfig;
-
-    public TokenService() {
-        super();
-    }
+    private final JwtConfig jwtConfig;
 
     public TokenService (JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;

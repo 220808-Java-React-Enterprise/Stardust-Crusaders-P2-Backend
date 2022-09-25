@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Optional.*;
+
 @Service
 public class UserService {
     @Autowired
@@ -68,58 +70,58 @@ public class UserService {
     }
 
     public void setActive(String id, boolean isActive) {
-        userRepo.setActive(id, isActive);
+            userRepo.setActive(id, isActive);
     }
 
-    public Optional<User> getById(String id) {
-        return userRepo.findById(id);
+    public User getByUsername(String username) {
+        return userRepo.getByUsername(username);
     }
 
-    public List<User> getAll() {
-        return (List<User>) userRepo.findAll();
-    }
+//    public List<User> getAll() {
+//        return (List<User>) userRepo.findAll();
+//    }
 
-    public void updateUsername(String id, String username) {
-        if (isValidUsername(username)) {
-            if (isDuplicateUsername(username)) {
-                userRepo.changeUsername(id, username);
-            }
-        }
-    }
+//    public void updateUsername(String id, String username) {
+//        if (isValidUsername(username)) {
+//            if (isDuplicateUsername(username)) {
+//                userRepo.changeUsername(id, username);
+//            }
+//        }
+//    }
+//
+//    public void updatePassword(String id, String password1, String password2) {
+//        if (isValidPassword(password1)) {
+//            if (isSamePassword(password1, password2)) {
+//                byte[] salt = hash.generateSalt();
+//                String newPass = hash.hashPassword(password1, salt);
+//                userRepo.changePassword(id, newPass, salt);
+//            }
+//        }
+//    }
+//
+//    public void updateEmail(String id, String email) {
+//        if (isValidEmail(email)) {
+//            if (isDuplicateEmail(email)) {
+//                userRepo.changeEmail(id, email);
+//            }
+//        }
+//    }
+//
+//    public void updateGivenName(String id, String name) {
+//        if (isValidName(name)) {
+//            userRepo.changeGivenName(id, name);
+//        }
+//    }
+//
+//    public void updateSurname(String id, String name) {
+//        if (isValidName(name)) {
+//            userRepo.changeSurname(id, name);
+//        }
+//    }
 
-    public void updatePassword(String id, String password1, String password2) {
-        if (isValidPassword(password1)) {
-            if (isSamePassword(password1, password2)) {
-                byte[] salt = hash.generateSalt();
-                String newPass = hash.hashPassword(password1, salt);
-                userRepo.changePassword(id, newPass, salt);
-            }
-        }
-    }
-
-    public void updateEmail(String id, String email) {
-        if (isValidEmail(email)) {
-            if (isDuplicateEmail(email)) {
-                userRepo.changeEmail(id, email);
-            }
-        }
-    }
-
-    public void updateGivenName(String id, String name) {
-        if (isValidName(name)) {
-            userRepo.changeGivenName(id, name);
-        }
-    }
-
-    public void updateSurname(String id, String name) {
-        if (isValidName(name)) {
-            userRepo.changeSurname(id, name);
-        }
-    }
-
-    public void updateBio(String id, String bio) {
-        userRepo.updateBio(id, bio);
-    }
+//    public void updateBio(String id, String bio) {
+//        userRepo.updateBio(id, bio);
+//    }
 
     public String retrieveBio(String id) {
         return userRepo.getBioById(id);
@@ -159,21 +161,21 @@ public class UserService {
         return true;
     }
 
-    public boolean isValidName(String name) {
-        if (!name.matches("^(\\s)*[A-Za-z]{1,20}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$"))
-            throw new InvalidRequestException("\nPlease enter your name (max 20 characters)");
-        return true;
-    }
-
-    public boolean matchesExistingPassword(String id, String password) {
-        String userPass = userRepo.getPassword(id);
-        byte[] userSalt = userRepo.getSaltById(id);
-
-        String saltyPass = hash.hashPassword(password, userSalt);
-        if(!saltyPass.equals(userPass)) {
-            throw new InvalidRequestException ("Password not recognized");
-        }
-        return true;
-    }
+//    public boolean isValidName(String name) {
+//        if (!name.matches("^(\\s)*[A-Za-z]{1,20}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$"))
+//            throw new InvalidRequestException("\nPlease enter your name (max 20 characters)");
+//        return true;
+//    }
+//
+//    public boolean matchesExistingPassword(String id, String password) {
+//        String userPass = userRepo.getPassword(id);
+//        byte[] userSalt = userRepo.getSaltById(id);
+//
+//        String saltyPass = hash.hashPassword(password, userSalt);
+//        if(!saltyPass.equals(userPass)) {
+//            throw new InvalidRequestException ("Password not recognized");
+//        }
+//        return true;
+//    }
 
 }
