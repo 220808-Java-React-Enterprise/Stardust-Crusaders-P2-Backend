@@ -18,7 +18,7 @@ Are you a busy trainer with a software engineering job? PokeCare allows you to s
 
 - Tables
 	
-	![ERD](PokeCareERD.png)
+	![ERD](PokeCareERDv1.1.png)
 
 - Features:
 
