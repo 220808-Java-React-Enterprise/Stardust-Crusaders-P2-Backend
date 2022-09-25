@@ -2,6 +2,7 @@ package com.revature.pokecare.controllers;
 
 import com.revature.pokecare.dtos.requests.LoginRequest;
 import com.revature.pokecare.dtos.responses.Principal;
+import com.revature.pokecare.services.PokemonService;
 import com.revature.pokecare.services.TokenService;
 import com.revature.pokecare.services.UserService;
 import com.revature.pokecare.utils.custom_exceptions.InvalidRequestException;
@@ -21,10 +22,12 @@ public class AuthController {
     @Autowired
     private final UserService userService;
     private final TokenService tokenService;
+    private final PokemonService pokemonService;
 
-    public AuthController(UserService userService, TokenService tokenService) {
+    public AuthController(UserService userService, TokenService tokenService, PokemonService pokemonService) {
         this.userService = userService;
         this.tokenService = tokenService;
+        this.pokemonService = pokemonService;
     }
 
     @CrossOrigin(exposedHeaders = "user-auth")
@@ -35,6 +38,7 @@ public class AuthController {
             Principal principal = userService.login(request);
             String token = tokenService.generateToken(principal);
             resp.setHeader("user-auth", token);
+            pokemonService.updateXP(principal.getId());
             return principal;
         } catch (InvalidRequestException e) {
             e.getStackTrace();

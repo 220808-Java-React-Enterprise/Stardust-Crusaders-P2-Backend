@@ -10,6 +10,8 @@ import com.revature.pokecare.utils.custom_exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +39,8 @@ public class UserService {
                             if (isDuplicateEmail(request.getEmail())) {
                                 byte[] salt = hash.generateSalt();
                                 String userPass = hash.hashPassword(request.getPassword1(), salt);
+                                Calendar cal = Calendar.getInstance();
+                                Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
                                 user = new User(UUID.randomUUID().toString(),
                                         request.getUsername(),
                                         userPass,
@@ -46,7 +50,8 @@ public class UserService {
                                         role,
                                         false,
                                         salt,
-                                        "");
+                                        "",
+                                        timestamp);
                                 userRepo.save(user);
                             }
                         }
