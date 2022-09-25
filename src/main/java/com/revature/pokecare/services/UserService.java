@@ -73,9 +73,9 @@ public class UserService {
             userRepo.setActive(id, isActive);
     }
 
-    public User getByUsername(String username) {
-        return userRepo.getByUsername(username);
-    }
+//    public User getByUsername(String username) {
+//        return userRepo.getByUsername(username);
+//    }
 
 //    public List<User> getAll() {
 //        return (List<User>) userRepo.findAll();
@@ -122,10 +122,10 @@ public class UserService {
 //    public void updateBio(String id, String bio) {
 //        userRepo.updateBio(id, bio);
 //    }
-
-    public String retrieveBio(String id) {
-        return userRepo.getBioById(id);
-    }
+//
+//    public String retrieveBio(String id) {
+//        return userRepo.getBioById(id);
+//    }
 
     public boolean isValidUsername(String username) {
         if (!username.matches("^[a-zA-Z0-9_-]{3,15}$"))

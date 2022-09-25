@@ -27,50 +27,50 @@ public class ProfileController {
         this.tokenService = tokenService;
     }
 
-    @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String retrieveUserBio(@RequestBody UserBioRequest request, @RequestHeader(name = "user-auth") String token) {
-        Principal principal = tokenService.extractRequesterDetails(token);
-
-        try {
-            return userService.retrieveBio(principal.getId());
-        } catch (InvalidRequestException e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            throw new InvalidRequestException();
-        } catch (HttpClientErrorException e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
-    }
-    @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/{username}", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String displayUserProfile(@RequestHeader(name = "user-auth") String token, @PathVariable("username") String username) {
-        User foundUser = userService.getByUsername(username);
-
-        try {
-            return userService.retrieveBio(foundUser.getUser_id());
-        } catch (InvalidRequestException e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            throw new InvalidRequestException();
-        } catch (HttpClientErrorException e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
-    }
-
-    @ExceptionHandler(value = InvalidRequestException.class)
-    public ResponseEntity<Object> exception(InvalidRequestException exception) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(value = HttpClientErrorException.Forbidden.class)
-    public ResponseEntity<Object> exception(HttpClientErrorException exception) {
-        return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
-    }
+//    @CrossOrigin
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @GetMapping(value = "/", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody String retrieveUserBio(@RequestBody UserBioRequest request, @RequestHeader(name = "user-auth") String token) {
+//        Principal principal = tokenService.extractRequesterDetails(token);
+//
+//        try {
+//            return userService.retrieveBio(principal.getId());
+//        } catch (InvalidRequestException e) {
+//            e.getStackTrace();
+//            System.out.println(e.getMessage());
+//            throw new InvalidRequestException();
+//        } catch (HttpClientErrorException e) {
+//            e.getStackTrace();
+//            System.out.println(e.getMessage());
+//            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+//        }
+//    }
+//    @CrossOrigin
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @GetMapping(value = "/{username}", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody String displayUserProfile(@RequestHeader(name = "user-auth") String token, @PathVariable("username") String username) {
+//        User foundUser = userService.getByUsername(username);
+//
+//        try {
+//            return userService.retrieveBio(foundUser.getUser_id());
+//        } catch (InvalidRequestException e) {
+//            e.getStackTrace();
+//            System.out.println(e.getMessage());
+//            throw new InvalidRequestException();
+//        } catch (HttpClientErrorException e) {
+//            e.getStackTrace();
+//            System.out.println(e.getMessage());
+//            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+//        }
+//    }
+//
+//    @ExceptionHandler(value = InvalidRequestException.class)
+//    public ResponseEntity<Object> exception(InvalidRequestException exception) {
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler(value = HttpClientErrorException.Forbidden.class)
+//    public ResponseEntity<Object> exception(HttpClientErrorException exception) {
+//        return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+//    }
 }

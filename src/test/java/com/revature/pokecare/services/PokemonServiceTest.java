@@ -1,23 +1,18 @@
 package com.revature.pokecare.services;
 
 import com.revature.pokecare.dtos.requests.NewPokemonRequest;
+import com.revature.pokecare.dtos.responses.ViewPokemon;
 import com.revature.pokecare.models.Pokemon;
 import com.revature.pokecare.repositories.*;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class PokemonServiceTest {
 
-    @Autowired
     private PokemonService pokeService;
 
     private final PokemonRepository mockPokeRepo = mock(PokemonRepository.class);
@@ -28,7 +23,7 @@ public class PokemonServiceTest {
     private Pokemon mockPokemon;
     private NewPokemonRequest mockRequest;
 
-    @BeforeEach
+    @Before
     public void setup() {
         pokeService = new PokemonService(mockPokeRepo, mockEVRepo, mockIVRepo, mockMoveSetRepo, mockUserRepo);
         mockPokemon = mock(Pokemon.class);
@@ -41,8 +36,14 @@ public class PokemonServiceTest {
 
     @Test
     public void test_findByID_givenValidRequest() {
-        Pokemon pokemon = pokeService.save(mockRequest);
-        verify(mockPokeRepo, times(1)).save(pokemon);
-        Assert.assertNotNull(pokemon);
+        PokemonService spiedServ = Mockito.spy(pokeService);
+        String validId = "000000";
+
+        when(mockPokeRepo.findByID(validId)).thenReturn("000000,Static,null,10,Pikachu,Hardy,25,100,10101,20202,30303,40404");
+
+        ViewPokemon test = spiedServ.findByID(validId);
+        Assert.assertNotNull(test);
+
+        verify(mockPokeRepo, times(1)).findByID(validId);
     }
 }
