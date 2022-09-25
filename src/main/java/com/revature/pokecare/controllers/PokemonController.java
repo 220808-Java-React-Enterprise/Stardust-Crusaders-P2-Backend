@@ -211,6 +211,30 @@ public class PokemonController {
         }
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/vieweggs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<ViewPokemon> viewEggs(@RequestHeader(name = "user-auth") String token) {
+        try {
+            String user_id = tokenService.extractRequesterDetails(token).getId();
+            List<ViewPokemon> p = pokemonService.getByUserId(user_id);
+            List<ViewPokemon> eggs = new ArrayList<>();
+            for (ViewPokemon i : p) {
+                if (i.getLevel()==0) {
+                    eggs.add(i);
+                }
+            }
+            return eggs;
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (Exception e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
     @ExceptionHandler(value = InvalidRequestException.class)
     public ResponseEntity<Object> exception(InvalidRequestException exception) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
