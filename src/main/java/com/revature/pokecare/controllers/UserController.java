@@ -45,57 +45,57 @@ public class UserController {
         }
     }
 
-    @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
-    @PutMapping(value = "update_info", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String updateUserInfo(@RequestBody UserInfoRequest request, @RequestParam(name = "info") String info, @RequestHeader(name = "Authorization") String token) {
-        Principal principal = tokenService.extractRequesterDetails(token);
-        String userId = principal.getId();
-        String updatedInfo = request.getRequest();
+//    @CrossOrigin
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @PutMapping(value = "update_info", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody String updateUserInfo(@RequestBody UserInfoRequest request, @RequestParam(name = "info") String info, @RequestHeader(name = "Authorization") String token) {
+//        Principal principal = tokenService.extractRequesterDetails(token);
+//        String userId = principal.getId();
+//        String updatedInfo = request.getRequest();
+//
+//        try {
+//            switch(info) {
+//                case "username":
+//                    userService.updateUsername(userId, updatedInfo);
+//                    return "Username successfully updated";
+//                case "email":
+//                    userService.updateEmail(userId, updatedInfo);
+//                    return "Email successfully updated";
+//                case "given_name":
+//                    userService.updateGivenName(userId, updatedInfo);
+//                    return "Given name successfully updated";
+//                case "surname":
+//                    userService.updateSurname(userId, updatedInfo);
+//                    return "Surname successfully updated";
+//                default:
+//                    throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY);
+//            }
+//        } catch (InvalidRequestException e) {
+//            System.out.println(e.getMessage());
+//            throw new InvalidRequestException();
+//        } catch (ResourceConflictException e) {
+//            System.out.println(e.getMessage());
+//            throw new ResourceConflictException();
+//        }
+//    }
 
-        try {
-            switch(info) {
-                case "username":
-                    userService.updateUsername(userId, updatedInfo);
-                    return "Username successfully updated";
-                case "email":
-                    userService.updateEmail(userId, updatedInfo);
-                    return "Email successfully updated";
-                case "given_name":
-                    userService.updateGivenName(userId, updatedInfo);
-                    return "Given name successfully updated";
-                case "surname":
-                    userService.updateSurname(userId, updatedInfo);
-                    return "Surname successfully updated";
-                default:
-                    throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY);
-            }
-        } catch (InvalidRequestException e) {
-            System.out.println(e.getMessage());
-            throw new InvalidRequestException();
-        } catch (ResourceConflictException e) {
-            System.out.println(e.getMessage());
-            throw new ResourceConflictException();
-        }
-    }
-
-    @CrossOrigin
-    @ResponseStatus(value = HttpStatus.OK)
-    @PutMapping(value = "update_password", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String updateUserPassword(@RequestBody NewPasswordRequest request, @RequestHeader(name = "user-auth") String token) {
-        Principal principal = tokenService.extractRequesterDetails(token);
-        String userId = principal.getId();
-
-        try {
-            userService.matchesExistingPassword(userId,request.getOldPassword());
-            userService.updatePassword(userId, request.getPassword1(), request.getPassword2());
-            return "Password successfully updated";
-        } catch (InvalidRequestException e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            throw new InvalidRequestException();
-        }
-    }
+//    @CrossOrigin
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @PutMapping(value = "update_password", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody String updateUserPassword(@RequestBody NewPasswordRequest request, @RequestHeader(name = "user-auth") String token) {
+//        Principal principal = tokenService.extractRequesterDetails(token);
+//        String userId = principal.getId();
+//
+//        try {
+//            userService.matchesExistingPassword(userId,request.getOldPassword());
+//            userService.updatePassword(userId, request.getPassword1(), request.getPassword2());
+//            return "Password successfully updated";
+//        } catch (InvalidRequestException e) {
+//            e.getStackTrace();
+//            System.out.println(e.getMessage());
+//            throw new InvalidRequestException();
+//        }
+//    }
 
     @ExceptionHandler(value = InvalidRequestException.class)
     public ResponseEntity<Object> exception(InvalidRequestException exception) {

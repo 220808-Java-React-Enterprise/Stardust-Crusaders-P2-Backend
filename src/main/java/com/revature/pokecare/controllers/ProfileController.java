@@ -2,6 +2,7 @@ package com.revature.pokecare.controllers;
 
 import com.revature.pokecare.dtos.requests.UserBioRequest;
 import com.revature.pokecare.dtos.responses.Principal;
+import com.revature.pokecare.models.User;
 import com.revature.pokecare.services.TokenService;
 import com.revature.pokecare.services.UserService;
 import com.revature.pokecare.utils.custom_exceptions.InvalidRequestException;
@@ -34,6 +35,24 @@ public class ProfileController {
 
         try {
             return userService.retrieveBio(principal.getId());
+        } catch (InvalidRequestException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new InvalidRequestException();
+        } catch (HttpClientErrorException e) {
+            e.getStackTrace();
+            System.out.println(e.getMessage());
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+    }
+    @CrossOrigin
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/{username}", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String displayUserProfile(@RequestHeader(name = "user-auth") String token, @PathVariable("username") String username) {
+        User foundUser = userService.getByUsername(username);
+
+        try {
+            return userService.retrieveBio(foundUser.getUser_id());
         } catch (InvalidRequestException e) {
             e.getStackTrace();
             System.out.println(e.getMessage());

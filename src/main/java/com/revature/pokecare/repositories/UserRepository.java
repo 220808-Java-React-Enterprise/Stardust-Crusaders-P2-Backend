@@ -32,6 +32,9 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "SELECT bio FROM users WHERE user_id = ?1", nativeQuery = true)
     String getBioById(String id);
 
+    @Query(value = "SELECT username FROM users WHERE username = ?1", nativeQuery = true)
+    User getByUsername(String username);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE users SET is_active = ?2 WHERE user_id = ?1", nativeQuery = true)

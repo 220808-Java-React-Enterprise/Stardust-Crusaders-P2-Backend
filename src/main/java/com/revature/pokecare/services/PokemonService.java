@@ -42,9 +42,9 @@ public class PokemonService {
         }
     }
 
-    public List<String> findByUserID(String user_id) {
-        return pokemonRepository.findByUserID(user_id);
-    }
+//    public List<String> findByUserID(String user_id) {
+//        return pokemonRepository.findByUserID(user_id);
+//    }
 
     public List<ViewPokemon> getByUserId(String user_id) {
         List<ViewPokemon> result = new ArrayList<>();
