@@ -130,7 +130,7 @@ public class PokemonService {
         if (!Arrays.asList(levels).contains(0)) {
             if (pokemonRepository.getDateEnrolled(p1)!=null && pokemonRepository.getDateEnrolled(p2)!=null) {
                 final Random random = new Random();
-                final int millisInDay = 60 * 1000 * (random.nextInt(1) + 1);
+                final int millisInDay = 60 * 1000  + 1;
                 TimerTask task = new TimerTask() {
                     public void run() {
                         Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), pokemonRepository.getName(p1), Integer.parseInt(pokemonRepository.getPokedexID(p1)), 0, 0, pokemonRepository.getAbility(p2), pokemonRepository.getNature(p2), null, new EVs(UUID.randomUUID().toString()), new IVs(UUID.randomUUID().toString()), new MoveSet(UUID.randomUUID().toString()), userRepository.findById(user_id).get());
