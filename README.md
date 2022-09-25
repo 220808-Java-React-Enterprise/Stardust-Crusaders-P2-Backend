@@ -17,12 +17,8 @@ Are you a busy trainer with a software engineering job? PokeCare allows you to s
 ## Overview: 
 
 - Tables
-- User
-- Pokemon
-- Pokemon_Type
-- Daycare
-- Egg group
-- Pokemon_in_egg_group
+	
+	![ERD](PokeCare ERD.png)
 
 - Features:
 
